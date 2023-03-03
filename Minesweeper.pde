@@ -1,4 +1,3 @@
-//Use Processing 3.5
 import de.bezier.guido.*;
 public final static int NUM_ROWS = 5;
 public final static int NUM_COLS = 5;
@@ -23,12 +22,16 @@ void setup ()
     
     
     setMines();
+    setMines();
+    setMines();
+    setMines();
 }
 public void setMines()
 {
     int r = (int)(Math.random()*NUM_ROWS);
     int c = (int)(Math.random()*NUM_COLS);
-    mines.add(buttons[r][c]);
+    if(!mines.contains(buttons[r][c]))
+      mines.add(buttons[r][c]);
     System.out.println(r + ", " + c);
 }
 
@@ -53,13 +56,29 @@ public void displayWinningMessage()
 }
 public boolean isValid(int r, int c)
 {
-    //your code here
-    return false;
+    if((r < NUM_ROWS && r >= 0) && (c < NUM_COLS && c > 0))
+      return true;
+     return false;
 }
 public int countMines(int row, int col)
 {
     int numMines = 0;
-    //your code here
+    if(isValid(row-1,col-1) == true && mines.contains(buttons[row-1][col-1]))
+      numMines++;
+    if(isValid(row-1,col) == true && mines.contains(buttons[row-1][col]))
+      numMines++;
+    if(isValid(row-1,col+1) == true && mines.contains(buttons[row-1][col+1]))
+      numMines++;
+    if(isValid(row,col-1) == true && mines.contains(buttons[row][col-1]))
+      numMines++;
+    if(isValid(row,col+1) == true && mines.contains(buttons[row][col+1]))
+      numMines++;
+    if(isValid(row+1,col-1) == true && mines.contains(buttons[row+1][col-1]))
+      numMines++;
+    if(isValid(row+1,col) == true && mines.contains(buttons[row+1][col]))
+      numMines++;
+    if(isValid(row+1,col+1) == true && mines.contains(buttons[row+1][col+1]))
+      numMines++;
     return numMines;
 }
 public class MSButton
@@ -86,14 +105,24 @@ public class MSButton
     public void mousePressed () 
     {
         clicked = true;
-        //your code here
+        if(mouseButton == RIGHT){
+          flagged = !flagged;
+          if(flagged == false)
+            clicked = false;
+        }
+        else if(mines.contains(this))
+          displayLosingMessage();
+        else if(countMines(myRow,myCol) > 0)
+          setLabel(countMines(myRow,myCol));
+        
+        
     }
     public void draw () 
     {    
         if (flagged)
             fill(0);
-        // else if( clicked && mines.contains(this) ) 
-        //     fill(255,0,0);
+        else if( clicked && mines.contains(this) ) 
+            fill(255,0,0);
         else if(clicked)
             fill( 200 );
         else 
