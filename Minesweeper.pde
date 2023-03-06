@@ -49,6 +49,7 @@ public boolean isWon()
 public void displayLosingMessage()
 {
     //your code here
+    System.out.println("Lose");
 }
 public void displayWinningMessage()
 {
@@ -104,11 +105,21 @@ public class MSButton
     // called by manager
     public void mousePressed () 
     {
+      
+        if(flagged == true){
+         flagged = false;
+         if(isValid(myRow-1,myCol-1) && buttons[myRow-1][myCol-1].isFlagged()){
+           buttons[myRow-1][myCol-1].mousePressed();
+         }
+        }
+        
+        
+      
         clicked = true;
         if(mouseButton == RIGHT){
           flagged = !flagged;
-          if(flagged == false)
-            clicked = false;
+        if(flagged == false)
+          clicked = false;
         }
         else if(mines.contains(this))
           displayLosingMessage();
