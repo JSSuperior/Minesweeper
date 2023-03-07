@@ -57,7 +57,7 @@ public void displayWinningMessage()
 }
 public boolean isValid(int r, int c)
 {
-    if((r < NUM_ROWS && r >= 0) && (c < NUM_COLS && c > 0))
+    if((r < NUM_ROWS && r >= 0) && (c < NUM_COLS && c >= 0))
       return true;
      return false;
 }
@@ -106,14 +106,16 @@ public class MSButton
     public void mousePressed () 
     {
       
-        if(flagged == true){
-         flagged = false;
-         if(isValid(myRow-1,myCol-1) && buttons[myRow-1][myCol-1].isFlagged()){
-           buttons[myRow-1][myCol-1].mousePressed();
-         }
-        }
+      //  if(flagged == true){
+      //   flagged = false;
+      //   if(isValid(myRow-1,myCol-1) && buttons[myRow-1][myCol-1].isFlagged()){
+      //     buttons[myRow-1][myCol-1].mousePressed();
+      //   }
+      //  }
         
-        
+        //Known issues/things to work on: [maybe NOT solved?] Sometimes generated one mine less than requested, sometimes mines won't have any surrounding numbers, only on col 1?
+        //Recursion works, just issue of getting it to stop and reveal numbers.
+        //[ISSUE SOLVED] Problem was in isValid. specific issue with either countMines or setMines which for some reason does not detect mines when in the 0 column
       
         clicked = true;
         if(mouseButton == RIGHT){
@@ -125,9 +127,11 @@ public class MSButton
           displayLosingMessage();
         else if(countMines(myRow,myCol) > 0)
           setLabel(countMines(myRow,myCol));
-        
-        
+          
+          //buttons[myRow-1][myCol-1].mousePressed();
     }
+        
+
     public void draw () 
     {    
         if (flagged)
